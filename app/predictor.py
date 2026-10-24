@@ -210,7 +210,9 @@ class Predictor:
             explanation = shap.Explanation(values=np.r_[phi[top], other],
                                            base_values=baseline, feature_names=labels)
             with self.plot_lock:
-                plt.rcParams.update({"font.family": "Times New Roman", "font.size": 10,
+                plt.rcParams.update({"font.family": "serif",
+                                     "font.serif": ["Times New Roman", "Liberation Serif", "DejaVu Serif"],
+                                     "font.size": 10,
                                      "figure.facecolor": "white", "savefig.facecolor": "white"})
                 shap.plots.waterfall(explanation, max_display=11, show=False)
                 fig = plt.gcf()

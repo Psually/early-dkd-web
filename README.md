@@ -30,6 +30,8 @@ Open [http://127.0.0.1:8765/](http://127.0.0.1:8765/). On Windows, `start_web.cm
 
 ## Public deployment
 
+The public research application is available at [https://psually.pythonanywhere.com/](https://psually.pythonanywhere.com/). It is hosted on PythonAnywhere's free Beginner plan. The account owner must renew the free web app in the PythonAnywhere Web tab once per month.
+
 `render.yaml` defines a Python web service for Render. Create a Render Blueprint from this GitHub repository to deploy it. The deployment runs the synthetic self-test during the build, listens on Render's `PORT` at `0.0.0.0`, and uses `/api/health` for health checks. Render provides the public HTTPS URL after deployment. Enter only de-identified measurements in the public research tool; the app does not persist request values or predictions.
 
 PythonAnywhere can run the same application through `app.wsgi:application`. From a Python 3.12 virtual environment, install `requirements.txt` and run `python -m scripts.wsgi_self_test`. Set the PythonAnywhere WSGI configuration file to import `application` from `app.wsgi` after adding this repository root to `sys.path` and activating the virtual environment. The free Beginner plan has limited disk and CPU resources and requires periodic renewal of its web app.
