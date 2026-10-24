@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: early-dkd-web
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt && python -m scripts.self_test
+    startCommand: python -m app.serve
+    healthCheckPath: /api/health
+    envVars:
+      - key: DKD_WEB_HOST
+        value: 0.0.0.0

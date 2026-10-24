@@ -28,6 +28,10 @@ python -m venv .venv
 
 Open [http://127.0.0.1:8765/](http://127.0.0.1:8765/). On Windows, `start_web.cmd` or `run.ps1` starts the same local service. The service binds to `127.0.0.1` and does not save submitted measurements or predictions.
 
+## Public deployment
+
+`render.yaml` defines a Python web service for Render. Create a Render Blueprint from this GitHub repository to deploy it. The deployment runs the synthetic self-test during the build, listens on Render's `PORT` at `0.0.0.0`, and uses `/api/health` for health checks. Render provides the public HTTPS URL after deployment. Enter only de-identified measurements in the public research tool; the app does not persist request values or predictions.
+
 ## Model and reproducibility
 
 The predictor names and units are listed in [`docs/FEATURES.md`](docs/FEATURES.md). The model implementation and validation details are in [`docs/METHODS.md`](docs/METHODS.md). `scripts.self_test` uses synthetic measurements and checks prediction stability and SHAP additivity.

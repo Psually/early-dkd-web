@@ -1,4 +1,4 @@
-"""Private loopback-only research web UI for the frozen early-DKD model."""
+"""Research web UI for the frozen early-DKD model."""
 from __future__ import annotations
 
 import json
@@ -63,7 +63,8 @@ class Handler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    port = int(os.environ.get("DKD_WEB_PORT", "8765"))
-    server = ThreadingHTTPServer(("127.0.0.1", port), Handler)
-    print(f"Early-DKD predictor: http://127.0.0.1:{port}/", flush=True)
+    port = int(os.environ.get("PORT", os.environ.get("DKD_WEB_PORT", "8765")))
+    host = os.environ.get("DKD_WEB_HOST", "127.0.0.1")
+    server = ThreadingHTTPServer((host, port), Handler)
+    print(f"Early-DKD predictor listening on {host}:{port}", flush=True)
     server.serve_forever()
