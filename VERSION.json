@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "model_sha256": "b2ab602ef66aaf8d6375dbee630babb8ff41b5312b0dc5b9f6a715cf9eecfd58",
+  "original_predictors": 31,
+  "internal_missingness_indicators": 24,
+  "imputation_draws": 10,
+  "threshold": 0.4180193107
+}
