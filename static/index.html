@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Early-Stage DKD Prediction</title>
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/validation.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="hero">
+      <div class="eyebrow">RESEARCH MODEL · PRE-PSM</div>
+      <h1>Early-Stage DKD Prediction</h1>
+      <p>Early kidney disease assessment in adults with obesity and type 2 diabetes · Frozen RF model</p>
+      <div class="hero-pills"><span>31 Clinical Predictors</span><span>10 Imputation Draws</span></div>
+    </header>
+
+    <div class="layout">
+      <section class="entry card">
+        <div class="section-heading"><div><span class="section-kicker">PATIENT INPUT</span><h2>Enter Clinical Data</h2></div><span class="private-badge">Local only</span></div>
+        <p class="hint">For adults with confirmed type 2 diabetes and BMI ≥ 28 kg/m². Age and sex are required; leave unavailable measurements blank. For qualitative urine tests, select Positive for “±” or any “+” result, and Negative for “−”.</p>
+        <form id="predict-form" autocomplete="off" novalidate>
+          <div id="input-groups"></div>
+          <div id="error-box" class="error-box" role="alert" hidden></div>
+          <div class="actions"><button id="predict-button" type="submit">Predict <span aria-hidden="true">→</span></button><span id="form-status" role="status"></span></div>
+        </form>
+      </section>
+
+      <aside class="results card" id="results">
+        <div class="section-heading"><div><span class="section-kicker">INDIVIDUAL RESULT</span><h2>Prediction Result</h2></div></div>
+        <div id="empty-result" class="empty-result"><div class="empty-symbol">＋</div><p>Enter the clinical data to see the predicted probability and individual SHAP waterfall plot.</p></div>
+        <div id="result-content" hidden>
+          <div class="risk-card"><div class="risk-top"><span>Predicted Probability of Early DKD</span><span id="risk-level" class="risk-level"></span></div><strong id="risk-number"></strong><div class="risk-track"><div id="risk-fill"></div></div><small id="threshold-note"></small></div>
+          <div class="result-meta"><div><span>Model Baseline Probability</span><strong id="baseline-number"></strong></div><div><span>Unavailable Inputs</span><strong id="missing-number"></strong></div></div>
+          <section class="explanation"><div class="subheading"><h3>Individual SHAP Waterfall</h3><span>Red increases probability · Blue decreases probability</span></div><img id="waterfall-image" alt="Individual SHAP waterfall plot"><p>The other model inputs are summarized as Other.</p></section>
+          <details class="detail-panel"><summary>View All 31 Predictor Contributions</summary><div class="table-wrap"><table><thead><tr><th>Predictor</th><th>Model Input Value</th><th>Probability Contribution</th></tr></thead><tbody id="all-contributions"></tbody></table></div></details>
+        </div>
+        <p class="research-note">For research use in contemporaneous case identification. The probability alone does not confirm CKD. The decision threshold was fixed using training-set cross-validation.</p>
+      </aside>
+    </div>
+    <footer>Fixed RF · Internal validation n=373 · External validation n=1,345 · No patient data saved</footer>
+  </main>
+</body>
+</html>
