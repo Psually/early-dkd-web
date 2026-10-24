@@ -42,6 +42,3 @@ The predictor names and units are listed in [`docs/FEATURES.md`](docs/FEATURES.m
 
 The included frozen model is required for prediction. Model reconstruction and cohort-level verification require the restricted project data; patient-level records are not included in this repository. Load the model file only from a trusted source because `joblib` uses Python pickle serialization.
 
-## Reference
-
-Repository organization was informed by the [early-stage CKD prediction example](https://github.com/Jiayi-Njucm/early-stage-ckd-prediction). This application's implementation and fitted model are separate from that example.
