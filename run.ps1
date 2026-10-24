@@ -4,4 +4,5 @@ $env:OMP_NUM_THREADS = '1'
 $localPython = Join-Path $PSScriptRoot '.venv\Scripts\python.exe'
 $python = if (Test-Path -LiteralPath $localPython) { $localPython } else { 'python' }
 Write-Host 'Open http://127.0.0.1:8765/ . Press Ctrl+C to stop.'
-& $python (Join-Path $PSScriptRoot 'serve.py')
+Push-Location $PSScriptRoot
+try { & $python -m app.serve } finally { Pop-Location }

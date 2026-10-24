@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from predictor import HERE, InputError, Predictor
-from runtime import ROOT
+from app.predictor import InputError, Predictor
+from app.runtime import ROOT
 
 
 def main() -> None:
@@ -53,7 +53,7 @@ def main() -> None:
               "waterfall_png_bytes_approx": len(result["waterfall_png"]) * 3 // 4,
               "tested_model_inputs": 55, "displayed_clinical_contributions": 31,
               "external_complete_cases_available": int(complete.sum())}
-    (HERE / "web_verification.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    (Path(__file__).resolve().parents[1] / "docs" / "web_verification.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report, indent=2))
 
 

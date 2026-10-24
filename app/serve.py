@@ -7,7 +7,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from predictor import HERE, InputError, Predictor
+from .predictor import HERE, InputError, Predictor
 
 
 STATIC = HERE / "static"

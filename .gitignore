@@ -2,3 +2,13 @@
 __pycache__/
 *.py[cod]
 .DS_Store
+/work/
+/outputs/
+.env
+*.xlsx
+*.xls
+*.csv
+*.pkl
+*.pkl.gz
+*.joblib
+!/models/frozen_rf31_bundle.joblib

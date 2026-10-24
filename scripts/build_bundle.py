@@ -10,7 +10,7 @@ import json
 import warnings
 from pathlib import Path
 
-from runtime import ROOT, prepare_sklearn
+from app.runtime import ROOT, prepare_sklearn
 prepare_sklearn()
 
 import joblib
@@ -21,7 +21,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import IterativeImputer
 
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parents[1]
 WORK = ROOT / "work"
 AUDIT = json.loads((ROOT / "outputs/dkd_fixed31_tyg_12model_roc/Fig2_fixed31_TyG_12model_audit.json").read_text(encoding="utf-8"))
 MICE = json.loads((ROOT / "outputs/dkd_with_urine/DKD_panel_MICE_audit.json").read_text(encoding="utf-8"))
@@ -111,7 +111,7 @@ def main() -> None:
               "continuous": CONTINUOUS, "categorical": CATEGORICAL, "raw_inputs": RAW,
               "modes": MODES, "min": minimum, "max": maximum, "threshold": threshold,
               "models": models, "imputers": imputers}
-    artifact = HERE / "frozen_rf31_bundle.joblib"
+    artifact = HERE / "models" / "frozen_rf31_bundle.joblib"
     joblib.dump(bundle, artifact, compress=3)
     report = {"bundle_sha256": digest(artifact), "internal_replay_max_abs_error": internal_error,
               "external_replay_max_abs_error": external_error, "external_probability_column": external_col,
@@ -120,7 +120,7 @@ def main() -> None:
               "threshold": threshold,
               "source_sha256": {"model_audit": digest(ROOT / "outputs/dkd_fixed31_tyg_12model_roc/Fig2_fixed31_TyG_12model_audit.json"),
                                 "mice_audit": digest(ROOT / "outputs/dkd_with_urine/DKD_panel_MICE_audit.json")}}
-    (HERE / "bundle_audit.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    (HERE / "docs" / "bundle_audit.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=False, indent=2), flush=True)
 
 

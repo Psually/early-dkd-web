@@ -1,7 +1,7 @@
 """Synthetic, patient-free release gate for the frozen inference bundle."""
 from __future__ import annotations
 import math
-from predictor import InputError, Predictor
+from app.predictor import InputError, Predictor
 
 SYNTHETIC = {"Age":60,"Sex":1,"Height":170,"Weight":92,"BMI":31.8,
              "Waist_circ":105,"Hip_circ":108,"TG":2.1,"Glucose_0min":8.3,

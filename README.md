@@ -1,46 +1,39 @@
-# Early DKD Prediction Web App — v1.0.0
+# Early Kidney Disease Prediction in Adults with Obesity and Type 2 Diabetes
 
-A local, English-language research interface for the frozen pre-PSM random-forest model in adults with obesity and type 2 diabetes. It accepts 30 raw fields, calculates eight TyG-related indices, and displays an individual SHAP waterfall. Only the 31 original clinical predictor contributions are displayed; the remaining model inputs are aggregated into **Other**. The model uses the original 24 missingness indicators internally and has **not** been refitted for this release.
+## Introduction
 
-This private repository includes the approved frozen model bundle, so it can run after installing the listed dependencies. It contains no patient-level source data.
+This repository contains a research web application for identifying patients with the study-defined early kidney disease outcome. A frozen random-forest model uses **31 clinical predictors**: 17 selected clinical and blood indicators, six urine indicators, and eight TyG-related metabolic indicators. The application returns an estimated probability and an individual SHAP waterfall explanation.
 
-## Which archive to use
+The tool supports research and follow-up assessment. Its output is not a clinical diagnosis.
 
-- `early-dkd-web-v1.0.0-source.zip` is ready for a public source repository and contains no fitted model or patient records. Obtain the approved model bundle separately and place `frozen_rf31_bundle.joblib` in this directory before running.
-- `early-dkd-web-v1.0.0-complete.zip` includes the frozen fitted model for controlled distribution. Review institutional approval before making this binary public. It contains no raw patient rows.
+## Repository structure
 
-Both archives contain the same source code. `MODEL_SHA256.txt` identifies the exact approved model; startup verifies its hash before deserializing it. The full archive and this private repository include the model.
+| Directory | Contents |
+| --- | --- |
+| [`app/`](app/) | Prediction service and English web interface |
+| [`models/`](models/) | Frozen model, version information, and model checksum |
+| [`scripts/`](scripts/) | Model reconstruction, verification, and synthetic self-test |
+| [`docs/`](docs/) | Predictor definitions, methods, audits, and upload notes |
 
-## Run locally
+## Run the web application
 
-Use Python 3.12. Create an environment and install the locked direct dependencies:
+Use Python 3.12 from the repository root:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe self_test.py
-.\.venv\Scripts\python.exe serve.py
+.\.venv\Scripts\python.exe -m scripts.self_test
+.\.venv\Scripts\python.exe -m app.serve
 ```
 
-Open <http://127.0.0.1:8765/>. On Windows, `start_web.cmd` uses `.venv` if present. The server binds only to `127.0.0.1` and does not store submitted patient inputs or results. Load only a model bundle from a trusted source: `joblib` files use Python pickle serialization.
+Open [http://127.0.0.1:8765/](http://127.0.0.1:8765/). On Windows, `start_web.cmd` or `run.ps1` starts the same local service. The service binds to `127.0.0.1` and does not save submitted measurements or predictions.
 
-## Fixed model contract
+## Model and reproducibility
 
-- Original clinical predictors: 17 historical LASSO indicators + six urine indicators + eight TyG-family indices = **31**.
-- Auxiliary missingness indicators: **24**, processed internally in every model. There are 55 numerical model inputs per imputation draw.
-- Missing data: ten training-fitted Bayesian chained-equation imputers; categorical training modes.
-- Algorithm: mean probability from ten frozen random forests; each has 180 trees, minimum leaf size 10, `max_features='sqrt'`, seed 20261022.
-- Decision threshold: **0.4180193107**, selected from training out-of-fold Youden J.
-- Development training / internal holdout / independent external cohort: **870 / 373 / 1,345**.
+The predictor names and units are listed in [`docs/FEATURES.md`](docs/FEATURES.md). The model implementation and validation details are in [`docs/METHODS.md`](docs/METHODS.md). `scripts.self_test` uses synthetic measurements and checks prediction stability and SHAP additivity.
 
-The fitted model was reconstructed against both saved cohorts before freezing. The internal maximum absolute probability difference was below 1e-15; the external comparison to saved ten-decimal predictions was below 5e-11. `bundle_audit.json` and `web_verification.json` record these checks. `self_test.py` uses only synthetic measurements and checks the fixed probability, repeatability, SHAP additivity, 31-feature display, and waterfall generation.
+The included frozen model is required for prediction. Model reconstruction and cohort-level verification require the restricted project data; patient-level records are not included in this repository. Load the model file only from a trusted source because `joblib` uses Python pickle serialization.
 
-## Rebuilding from restricted data
+## Reference
 
-`build_bundle.py` and `verify_web_model.py` are included for authorized reviewers with access to the private project data. They require the existing `work/` and `outputs/` inputs and are not required to serve the frozen model. Set `DKD_PROJECT_ROOT` to the local project root before running them. No patient-level source data, identifiers, workbooks, or cohort prediction rows are included in either archive.
-
-## Research scope
-
-This is a contemporaneous case-identification model, not a standalone CKD diagnosis. The urine protein input may proxy the ACR-based endpoint. The historical LASSO selection used the entire 1,243-person development cohort; this limitation should accompany validation claims. The UI structure was inspired by Fig. 10 of the reference paper; the public reference repository did not provide the web source code, and this implementation is original.
-
-No software license is assigned in this package; the repository owner should choose one before publication.
+Repository organization was informed by the [early-stage CKD prediction example](https://github.com/Jiayi-Njucm/early-stage-ckd-prediction). This application's implementation and fitted model are separate from that example.

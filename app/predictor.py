@@ -10,7 +10,7 @@ import threading
 import warnings
 from pathlib import Path
 
-from runtime import prepare_sklearn
+from .runtime import prepare_sklearn
 prepare_sklearn()
 
 import joblib
@@ -23,6 +23,7 @@ import shap
 
 
 HERE = Path(__file__).resolve().parent
+MODEL_DIR = HERE.parent / "models"
 URINE = ["Urine_PRO", "Urine_GLU", "Urine_LEU", "Urine_ERY", "Urine_NIT", "Urine_KET"]
 LABELS = {
     "Age": ("Age", "years"), "Sex": ("Sex", ""), "Height": ("Height", "cm"),
@@ -81,10 +82,10 @@ class InputError(ValueError):
 
 
 class Predictor:
-    def __init__(self, artifact: Path = HERE / "frozen_rf31_bundle.joblib"):
+    def __init__(self, artifact: Path = MODEL_DIR / "frozen_rf31_bundle.joblib"):
         if not artifact.is_file():
-            raise FileNotFoundError("Place the approved frozen_rf31_bundle.joblib beside predictor.py")
-        expected = (HERE / "MODEL_SHA256.txt").read_text(encoding="ascii").strip()
+            raise FileNotFoundError("Place the approved frozen_rf31_bundle.joblib in models/")
+        expected = (MODEL_DIR / "MODEL_SHA256.txt").read_text(encoding="ascii").strip()
         actual = hashlib.sha256(artifact.read_bytes()).hexdigest()
         if actual != expected:
             raise RuntimeError("Frozen model checksum mismatch")
