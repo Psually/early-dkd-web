@@ -1,0 +1,3 @@
+.field-error{display:block;margin-top:5px;color:#ac3934;font-size:11px;line-height:1.4}
+.field-error[hidden]{display:none}
+.field:has([aria-invalid="true"]) .control{border-color:#d85853;box-shadow:0 0 0 2px #d8585317}
